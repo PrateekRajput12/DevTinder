@@ -1,16 +1,49 @@
-const express=require("express")
+const express=require("express");
+const connectDB= require('./config/database')
 const app=express()
 
-app.use('/start',(req,res)=>{
-res.send("starting the server");
+const User=require('./models/user')
+app.post("/signup",async(req,res)=>{
+const userObj={
+    firstName:"Jatin"
+,
+lastName:"Parmar",
+emailId:"jatin@gmail.com",
+password:"jatin@123",
+age:12
+}
+
+const done= new User(
+  
+{firstName:"rohit"
+,
+lastName:"thakur",
+emailId:"rohit@gmail.com",
+password:"rohit@123",
+age:15}
+
+)
+
+// Creating new instance of user Model
+const user =new User(userObj)
+
+try{
+    await done.save()
+
+res.send("Done")
+}
+catch(err){
+    res.status(400).send("Error in savin Data "+err.message)
+}
 })
 
 
-app.use('/hello',(req,res)=>{
-    res.send("Hlo Nodejs ");
+connectDB().then(()=>{
+    console.log("DB COnnection established");
+    app.listen(7070,()=>{
+        console.log("Server started on port 7070");
     })
-    
-
-app.listen(8000,()=>{
-    console.log("running on port 8000");
+})
+.catch((err)=>{
+    console.error("Error connecting to DB",err);
 })
