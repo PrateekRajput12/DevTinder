@@ -29,3 +29,21 @@
 -JS object vs JSON (difference)
 -Add the express.json middleware to your app
 -Make your signup API Dynamic to recieve data from the end user
+-user.findOne() with duplicate email id 
+-API get user by email 
+-API - feed API -GET/feed -get all the users from the database
+-API -get user by id
+-create a DELETE user API
+-Differece btw PATCH and PUT
+-API- Update a user
+-Explore Mongoose documentation for model methods
+-what are optiona in a Model.findOneAndUpdate() method explore more about it
+-API update the user with emailID
+
+
+-Explore Schemetype options from the documentation
+-add required , unique,lowecase,min,minLength,trim
+-Add default
+-create custom Validate  function for gender
+-Imporve the DB schema - PUT all appropriate validations on each field in schema
+-Add timestamps to the userSchema

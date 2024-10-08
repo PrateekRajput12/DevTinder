@@ -2,7 +2,8 @@ const express=require("express");
 const connectDB= require('./config/database')
 const app=express()
 
-const User=require('./models/user')
+const User=require('./models/user');
+const user = require("./models/user");
 
 app.use(express.json())
 app.post("/signup",async(req,res)=>{
@@ -43,6 +44,77 @@ catch(err){
 })
 
 
+
+app.get("/user",async(req,res)=>{
+//   const data =connectDB.collecyion("test").
+try{
+    const data =  await User.findOne({emailId:req.body.emailId})
+    if(data.length===0){
+        res.status(400).send("User not found")
+
+    }
+    else{
+        console.log(data);
+    res.send(data) 
+    }
+
+
+}
+catch(e){
+    console.log("err");
+    res.status(400).send("Error in fetching Data ")
+}
+})
+
+
+app.get("/feed",async(req,res)=>{
+    try{
+        const allusers=await user.find({})
+        res.send(allusers)
+    }
+    catch(e){
+        console.log("Error in fetching Data ")
+        res.status(400).send("Error in fetching Data ")
+    }
+})
+
+
+
+
+app.get('/user/:id',async(req,res)=>{
+    try{
+        const userById=await user.findById(req.params.id)
+        res.send(userById)
+    }
+    catch{
+        res.status(404).send("User not found")
+    }
+})
+app.delete('/user/:id',async(req,res)=>{
+    try{
+        const userById=await user.findByIdAndDelete(req.params.id)
+
+       res.send("deleted user")
+    }
+    catch{
+        res.status(404).send("User not found")
+    }
+})
+
+app.patch("/user",async(req,res)=>{
+    const userId=req.body.userId
+    const data=req.body
+
+    try{
+       const updatedUser= await user.findByIdAndUpdate({_id:userId },data,{
+        returnDocument:"before",
+        runValidators:true
+       })
+        res.send("user updated succesfully")
+    }catch(err){
+res.status(404).send("User not found")
+    }
+})
 connectDB().then(()=>{
     console.log("DB COnnection established");
     app.listen(7070,()=>{
