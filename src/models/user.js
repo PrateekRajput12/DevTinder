@@ -1,5 +1,7 @@
 const mongoose=require("mongoose")
 
+const validator=require("validator")
+
 const { Schema } = mongoose;
 const userSchema= new Schema({
 firstName:{
@@ -20,6 +22,12 @@ emailId:{
 unique:true,
 lowercase:true,
 trim:true,
+validate(value){
+    if(!validator.isEmail(value)){
+        throw new Error("Email is not valid")
+    }
+    
+}
 },
 password:{
     type:String,
@@ -40,7 +48,13 @@ throw new Error("Gender Data is not valid")
 } ,
 photoURL:{
     type:String,
-    required:true
+    required:true,
+    validate(value){
+        if(!validator.isURL(value)){
+            throw new Error("URL is not valid")
+        }
+        
+    }
 }
 ,
 about:{
