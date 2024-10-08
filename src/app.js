@@ -3,32 +3,37 @@ const connectDB= require('./config/database')
 const app=express()
 
 const User=require('./models/user')
+
+app.use(express.json())
 app.post("/signup",async(req,res)=>{
-const userObj={
-    firstName:"Jatin"
-,
-lastName:"Parmar",
-emailId:"jatin@gmail.com",
-password:"jatin@123",
-age:12
-}
+    // console.log(req.body);
+// const userObj={
+//     firstName:"Jatin"
+// ,
+// lastName:"Parmar",
+// emailId:"jatin@gmail.com",
+// password:"jatin@123",
+// age:12
+// }
 
-const done= new User(
+// const done= new User(
   
-{firstName:"rohit"
-,
-lastName:"thakur",
-emailId:"rohit@gmail.com",
-password:"rohit@123",
-age:15}
+// {firstName:"rohit"
+// ,
+// lastName:"thakur",
+// emailId:"rohit@gmail.com",
+// password:"rohit@123",
+// age:15}
 
-)
+// )
 
-// Creating new instance of user Model
-const user =new User(userObj)
+// // Creating new instance of user Model
+// const user =new User(userObj)
 
+
+const user=new User(req.body)
 try{
-    await done.save()
+    await user.save()
 
 res.send("Done")
 }
@@ -45,5 +50,5 @@ connectDB().then(()=>{
     })
 })
 .catch((err)=>{
-    console.error("Error connecting to DB",err);
+    console.error("Error connecting to DB");
 })
