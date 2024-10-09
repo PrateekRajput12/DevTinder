@@ -51,3 +51,14 @@
 -  Data Senitization Add API validation for each field
 - Install validator
 - Explore validator Library functions for password email or url
+- Never TRUST  req.body
+
+
+
+
+
+ - Validate Data in SIgnup API
+ - install bcrypt package
+ - create passwordHash using bcrypt.hash & save the user is excrupted password
+ - Create login API write logic by your own
+ - compare password and throw errror if email or password is invalid
