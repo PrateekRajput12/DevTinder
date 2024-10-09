@@ -7,8 +7,12 @@ const User=require('./models/user');
 const user = require("./models/user");
 
 const bcrypt=require('bcrypt')
-
+const cookieParser = require('cookie-parser')
+const jwt=require("jsonwebtoken")
 app.use(express.json())
+app.use(cookieParser())
+
+const {userAuth} = require('./middlewares/auth')
 app.post("/signup",async(req,res)=>{
 
 // Validation of Data
@@ -75,15 +79,31 @@ catch(err){
 }
 })
 
-app.post("/login",async(req,res)=>{
+app.post("/login", async(req,res)=>{
     try{
 const {emailId,password}=req.body
 const user=await User.findOne({emailId:emailId})
 if(!user){
     throw new Error("Invalid credentials")
 }
-const isPasswordValid=await bcrypt.compare(password,user.password)
+const isPasswordValid=await user.validatePassword(password)
 if(isPasswordValid){
+
+
+// Create JWT Token  
+// var token = await jwt.sign({ _id: user._id }, "Dev@tinder$56",{ expiresIn: '1h' });
+const token=await user.getJWT() 
+
+console.log(token);
+// Add token to cookie and send the response back ti user
+
+
+res.cookie("token",token,{
+    expires: new Date(Date.now() + 900000)
+} )
+
+// console.log(token)
+
    res.send("Login SuccessFul") 
 }else{
     throw new Error("Invalid credentials") 
@@ -93,6 +113,33 @@ res.status(400).send("Error : "+err.message)
     }
 })
 
+app.get("/profile",userAuth,async (req,res)=>{
+  
+ try{  
+//      const cookies=req.cookies;
+//     console.log(cookies);
+//     const {token}=cookies
+//     if(!token){
+//         throw new Error("Please Login Again")
+//     }
+//  const decodedMsg= jwt.verify(token, 'Dev@tinder$56');
+// const {_id}=decodedMsg
+// console.log("Logged in user : "+ _id);
+
+// const user=await User.findById(_id);
+const user=req.user
+if(!user){ throw new Error("User not found")}
+    res.send(user)
+}catch(e){
+res.status(404).send("User not found" + e.message)
+}
+})
+
+app.post("/sendConnectionRequest",userAuth,async(req,res)=>{
+    // sending a connection reques
+    console.log("sending connection request")
+    res.send("connection request sent")
+})
 
 
 app.get("/user",async(req,res)=>{

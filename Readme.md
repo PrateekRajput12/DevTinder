@@ -62,3 +62,18 @@
  - create passwordHash using bcrypt.hash & save the user is excrupted password
  - Create login API write logic by your own
  - compare password and throw errror if email or password is invalid
+
+
+- install cookie-parser
+-  just send a dummy cookie to user
+- create Get /profile API and check if you get the cookie back
+- install jsonwebtoken
+- Intsall jsonwebtoken
+ - In login APi, after email and password validation, create a JWT token and send it to user inn cookie
+ - read the cookie inside your profile API and find the logged in user
+ - userAuth middleware 
+ - Add the userAuth middleare in profile api and send new connectionrequest API
+ - set expiry of JWT token and cookies to 7 days
+- create User Schema method to getJWT()
+- create User Schema method to compare password and take password input
+- 
