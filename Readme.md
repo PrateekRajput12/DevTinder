@@ -91,3 +91,14 @@
 - PAtch/profile/edit API
 - creata Patch/profile/password API=?>forgot Password Api
 - Make you validateall data i every POST PATCH apis
+
+-create connection request Schema
+- Send connection reqquest API
+- Proper validation  od data 
+- Think about All corner cases
+- $or query and $and query in mongoose
+- Read this article about indexes
+- read more about indexes on mongodb
+- why do we need indexes in db 
+- what is the advantages  & disdvantages of creating index 
+- ALWAYS THINK ABOUT CORNER CASES

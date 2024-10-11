@@ -9,7 +9,6 @@ const userSchema= new Schema({
 firstName:{
     type:String,
 required:true,
-unique:true,
 trim:true
 ,
 lowercase:true,
@@ -70,6 +69,8 @@ skills:{
     timestamps:true
 })
 
+
+userSchema.find({firstName:1,lastName:1})
 
 
 userSchema.methods.getJWT= async function(){
