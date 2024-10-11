@@ -106,3 +106,6 @@
 
 - write code with proper validation for POST /request/review/:status/:requestId
 - Thought process POST vs GET
+- Read About Ref and popilate
+- Create GET/user/request/recieve with all the checks
+- create get api GET /user/connections
