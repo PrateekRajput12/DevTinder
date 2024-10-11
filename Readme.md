@@ -90,4 +90,4 @@
 - Create Post/logout API
 - PAtch/profile/edit API
 - creata Patch/profile/password API=?>forgot Password Api
- - Make you validateall data i every POST PATCH apis
+- Make you validateall data i every POST PATCH apis
