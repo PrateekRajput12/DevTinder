@@ -102,3 +102,7 @@
 - why do we need indexes in db 
 - what is the advantages  & disdvantages of creating index 
 - ALWAYS THINK ABOUT CORNER CASES
+
+
+- write code with proper validation for POST /request/review/:status/:requestId
+- Thought process POST vs GET

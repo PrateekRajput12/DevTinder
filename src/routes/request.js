@@ -5,7 +5,7 @@ const requestRouters=express.Router()
 const connectionRequestModel=require("../models/connectionRequest")
 const {userAuth}=require("../middlewares/auth")
 
-requestRouters.post("/request/review/:status/:toUserId",userAuth,async (req,res)=>{
+requestRouters.post("/request/send/:status/:toUserId",userAuth,async (req,res)=>{
     try{
 const fromUserId=req.user._id
 const toUserId=req.params.toUserId
@@ -47,3 +47,39 @@ res.json({
 res.status(400).send("ERROR: "+e.message)
     }
 })
+
+
+requestRouters.post("/request/review/:status/:requestId",userAuth,async(req,res)=>{
+    try{
+
+        const {requestId,status}=req.params
+        const loggedInUser=req.user
+
+        const allowedStatus=["accepted","rejected"]
+        if(!allowedStatus.includes(status)){
+            return res.status(400).json({message:`your status is ${status} which is not allowed`})
+        }
+
+const connectionRequest=new connectionRequestModel({
+    _id:requestId,
+ toUserId:loggedInUser._id,
+ status:"interested"
+})
+if(!connectionRequest){
+    return res.status(404).json({
+        message:"Connection Request Not Found"
+    })
+}
+
+connectionRequest.status=status
+const data=await connectionRequest.save()
+
+    }
+    catch(e){
+        res.status(400).json({
+            message:`Error :${e.message}`,
+          
+        })
+    }
+}
+)
