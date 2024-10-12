@@ -1,7 +1,7 @@
 const mongoose=require("mongoose")
-const user = require("./user")
+// const user = require("./user")
 const User=require("./user")
-const connectionRequestSchema=new  mongoose.Schema({
+const connectionRequestSchema=new mongoose.Schema({
 
 
     fromUserId:{
@@ -16,11 +16,12 @@ const connectionRequestSchema=new  mongoose.Schema({
     },
     status:{
         type:String,
+        require:true,
         enum:{
             values:["ignore" , "interested", "accepted" ,"rejected"],
-            message:`${VALUE} is incorrect status type`
-        }
-    }
+            message:`{VALUE} is incorrect status type`
+        },
+    },
 },
 {
     timestamps:true
@@ -32,7 +33,7 @@ connectionRequestSchema.index({
 })
 
 
-connectionRequestModel.pre("save",function(){
+connectionRequestSchema.pre("save",function(next){
     const connectionRequest=this
     if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
         throw new Error("You cannot send Request to yourself")
@@ -40,7 +41,7 @@ connectionRequestModel.pre("save",function(){
     next();
 })
 
-const connectionRequestModel=new mongoose.model("connectionRequestModel",connectionRequestSchema)
+const ConnectionRequestModel=new mongoose.model("ConnectionRequestModel",connectionRequestSchema)
 
 
-module.exports=connectionRequestModel
+module.exports=ConnectionRequestModel

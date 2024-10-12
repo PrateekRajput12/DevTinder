@@ -19,7 +19,8 @@ if(!user){
 }
 req.user=user
 
-next()}
+next()
+}
 catch(err){
     res.status(401).send("Not authenticated" + err.message)
  

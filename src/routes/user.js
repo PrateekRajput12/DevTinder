@@ -1,8 +1,8 @@
 
 const express=require('express')
-const user = require('../models/user')
+const User = require('../models/user')
 const { userAuth } = require('../middlewares/auth')
-const connectionRequestModel = require('../models/connectionRequest')
+const ConnectionRequestModel = require('../models/connectionRequest')
 
 const userRouter=express.Router()
 
@@ -12,17 +12,26 @@ const SAFE_SHOW_DATA=["firstName","lastName","age","skills","about"]
 
 
 userRouter.get("/user/requests/receive",userAuth,async(req,res)=>{
+  try{
     const loggedInUser=req.user
-    const connectionRequest=await connectionRequestModel.find({
-toUserId:loggedInUser._Id,
+    console.log(loggedInUser);
+
+        const connectionRequest=await ConnectionRequestModel.find({
+toUserId:loggedInUser,
 status:"interested"
-    }).populate("fromUserId",["fistName","lastName"])
+    }).populate("fromUserId",SAFE_SHOW_DATA)
+if(!connectionRequest){
+    return res.send("kuch to gadbad hai daya")
+}
 
 
     res.json({
         message:"Data Fetched Succesfully",
         data:connectionRequest
     })
+  }catch(e){
+    res.status(404).json({message:"There is Some problems"+e.message})
+  }
 
 })
 
@@ -31,12 +40,13 @@ status:"interested"
 userRouter.get("/user/connections",userAuth,async(req,res)=>{
     try{
         const loggedInUser=req.user
+        // console.log(loggedInUser);
         
 
-        const connectionRequest=await connectionRequestModel.find({
+        const connectionRequest=await ConnectionRequestModel.find({
            $or:[
-            {toUserId:loggedInUser,status:"accepted"},
-            {fromUserId:loggedInUser,status:"accepted"}
+            {toUserId:loggedInUser._id,status:"accepted"},
+            {fromUserId:loggedInUser._id,status:"accepted"}
            ]
         }).populate("fromUserId",SAFE_SHOW_DATA).populate("toUserId",SAFE_SHOW_DATA)
 
@@ -47,6 +57,8 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
             }
             return row.fromUserId
         })
+
+        res.json({data})
     }
     catch(e){
     res.status(400).res.send("Error"+e.message)
